@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from spyder import MagazineLuizaSpyder
+from src.spyders import MagazineLuizaSpyder
 import json
 
 
@@ -11,7 +11,7 @@ class Factory(ABC):
 
 class MagazineLuizaProducts(Factory):
     def __init__(self) -> None:
-        with open('site-info.json') as file:
+        with open('src/site-info.json') as file:
             data = json.load(file)
         self.data = data
 

@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from entities import Product, Data
+from src.entities import Product, Data
 from abc import ABC, abstractmethod
 
 

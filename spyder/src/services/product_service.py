@@ -1,6 +1,6 @@
-from factories import Factory
-from entities import Product
-from repositories.product_repository import ProductRepository
+from src.factories import Factory
+from src.entities import Product
+from src.repositories.product_repository import ProductRepository
 
 
 class ProductService:
