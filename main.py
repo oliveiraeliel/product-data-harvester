@@ -1,9 +1,8 @@
-from spyder import Spyder
+from factories import MagazineLuizaProducts
 
 
 def main():
-    print(Spyder('https://www.magazineluiza.com.br/',
-                 'celulares-e-smartphones/l/te').fetch_product())
+    print(MagazineLuizaProducts().get_products())
 
 
 if __name__ == '__main__':
