@@ -11,14 +11,15 @@ class ProductRepositorySqlite(ProductRepository):
         try:
             self.cursor.execute(
                 '''CREATE TABLE IF NOT EXISTS Products (
-                    id VARCHAR(20) PRIMARY KEY,
+                    id VARCHAR(20),
                     name VARCHAR(150) NOT NULL,
                     page_url VARCHAR(255) NOT NULL,
                     image_url VARCHAR(255),
                     price FLOAT NOT NULL,
                     product_type VARCHAR(50) NOT NULL,
-                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                    created_at DATE DEFAULT (DATE('now')),
+                    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    PRIMARY KEY(id, created_at)
                 );
                 '''
             )
