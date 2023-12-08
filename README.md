@@ -1,1 +1,1 @@
-# Product Web Data Harvester
+# Web Product Data Harvester
