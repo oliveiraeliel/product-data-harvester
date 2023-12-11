@@ -24,7 +24,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
-//	implementation("org.xerial:sqlite-jdbc:3.36.0.3")
+	implementation("javax.validation:validation-api:2.0.1.Final")
 	implementation("org.xerial:sqlite-jdbc:3.40.0.0")
 	implementation("org.hibernate.orm:hibernate-community-dialects:6.1.6.Final")
 	implementation("org.springframework.boot:spring-boot-starter")
