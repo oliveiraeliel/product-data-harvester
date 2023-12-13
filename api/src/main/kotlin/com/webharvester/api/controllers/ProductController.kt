@@ -2,7 +2,7 @@ package com.webharvester.api.controllers
 
 import com.webharvester.api.config.ApiResponse
 import com.webharvester.api.dto.InsertProductPriceDTO
-import com.webharvester.api.models.Product
+import com.webharvester.api.dto.ProductPricesDTO
 import com.webharvester.api.models.ProductPriceDate
 import com.webharvester.api.services.ProductService
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,16 +21,11 @@ import javax.validation.Valid
 class ProductController @Autowired constructor(private val productService: ProductService){
 
     @GetMapping
-    fun getAll(): ResponseEntity<List<Product>> {
-        val products = productService.getAllProducts()
+    fun getAll(): ResponseEntity<List<ProductPricesDTO>> {
+        val products = productService.getAllProductsWithPrices()
         return ResponseEntity(products, HttpStatus.OK)
     }
 
-    @GetMapping("/a")
-    fun getAll2(): ResponseEntity<List<ProductPriceDate>> {
-        val products = productService.getAllPrices()
-        return ResponseEntity(products, HttpStatus.OK)
-    }
 
     @PostMapping
     fun insertProductPrice(@Valid @RequestBody insertProductPriceDTO: InsertProductPriceDTO,

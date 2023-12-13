@@ -1,6 +1,8 @@
 package com.webharvester.api.services
 
 import com.webharvester.api.dto.InsertProductPriceDTO
+import com.webharvester.api.dto.PriceDate
+import com.webharvester.api.dto.ProductPricesDTO
 import com.webharvester.api.models.Product
 import com.webharvester.api.models.ProductPriceDate
 import com.webharvester.api.models.ProductPriceDateId
@@ -14,8 +16,13 @@ import java.time.LocalDate
 class ProductService @Autowired constructor(
     private val productRepository: ProductRepository,
     private  val productPriceDateRepository: ProductPriceDateRepository){
-    fun getAllProducts() : List<Product>{
-        return productRepository.findAll();
+
+    fun getAllProductsWithPrices() : List<ProductPricesDTO>{
+        return productRepository.findAll()
+            .map {
+                ProductPricesDTO(productPriceDateRepository
+                    .findPricesByProductId(it.id))
+            }
     }
 
     fun insertProductPrice(dto: InsertProductPriceDTO): ProductPriceDate {
@@ -40,9 +47,5 @@ class ProductService @Autowired constructor(
                 product = product
             )
         )
-    }
-
-    fun getAllPrices(): List<ProductPriceDate>{
-        return productPriceDateRepository.findAll()
     }
 }
