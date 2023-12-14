@@ -7,7 +7,6 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.MapsId
 import jakarta.persistence.Table
 
-
 @Entity
 @Table(name = "ProductPrice")
 data class ProductPriceDate(

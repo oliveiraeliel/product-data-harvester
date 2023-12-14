@@ -59,9 +59,8 @@ class ProductService @Autowired constructor(
 
     private fun generateUniqueProductId(): UUID {
         var id: UUID
-        do {
-            id = UUID.randomUUID()
-        } while (productRepository.findById(id).isPresent)
+        do id = UUID.randomUUID()
+        while (productRepository.findById(id).isPresent)
         return id
     }
 }
