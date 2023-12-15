@@ -1,21 +1,11 @@
 from dataclasses import dataclass
 
 
-class Data:
-    pass
-
-
 @dataclass
-class Product(Data):
+class Product:
     name: str = ''
-    price: float = 0
-    id: str = ''
-    image_url: str = ''
     page_url: str = ''
+    source: str = ''
+    image_url: str = ''
+    price: float = 0
     product_type: str = ''
-
-
-@dataclass
-class Source:
-    url: str = ''
-    target_path: str = ''
