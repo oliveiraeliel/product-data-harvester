@@ -1,14 +1,14 @@
+import asyncio
 from src.factories import MagazineLuizaProducts
-from src.services.product_service import ProductService
-from src.db.sqlite.product_repository_sqlite import ProductRepositorySqlite
+from src.request import PostData
 
 
-def main():
-    db = ProductRepositorySqlite('src/db/sqlite/sqlite.db')
-    ProductService(product_repository=db,
-                   spyder_factory=MagazineLuizaProducts()).save()
-    db.conn.close()
+async def main():
+    publisher = PostData(MagazineLuizaProducts())
+
+    print([await publisher.post_product(product)
+           for product in publisher.products])
 
 
 if __name__ == '__main__':
-    main()
+    asyncio.run(main())
