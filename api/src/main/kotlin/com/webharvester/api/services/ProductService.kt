@@ -1,6 +1,7 @@
 package com.webharvester.api.services
 
 import com.webharvester.api.dto.InsertProductPriceDTO
+import com.webharvester.api.dto.PriceDate
 import com.webharvester.api.dto.ProductPricesDTO
 import com.webharvester.api.models.Product
 import com.webharvester.api.models.ProductPriceDate
@@ -20,9 +21,13 @@ class ProductService @Autowired constructor(
 
     fun getAllProductsWithPrices() : List<ProductPricesDTO>{
         return productRepository.findAll()
-            .map {
-                ProductPricesDTO(productPriceDateRepository
-                    .findPricesByProductId(it.id))
+            .map { product ->
+                val productPriceDates = productPriceDateRepository.findPricesByProductId(product.id)
+                if (productPriceDates.isNotEmpty()) {
+                    ProductPricesDTO(product, productPriceDates.map { PriceDate(it) })
+                } else {
+                    ProductPricesDTO(product, emptyList())
+                }
             }
     }
 
@@ -48,13 +53,18 @@ class ProductService @Autowired constructor(
                 createdAt = createdAt
             )
         )
-        return productPriceDateRepository.save(
-            ProductPriceDate(
-                price = dto.price,
-                id = ProductPriceDateId(id = product.id, createdAtAsString = LocalDate.now().toString()),
-                product = product
-            )
-        )
+        val optionalLatestPrice = productPriceDateRepository.findLatestPrice(product.id)
+        if ((optionalLatestPrice.isPresent && optionalLatestPrice.get().price != dto.price)
+            || optionalLatestPrice.isEmpty){
+            return productPriceDateRepository.save(
+                    ProductPriceDate(
+                        price = dto.price,
+                        id = ProductPriceDateId(id = product.id, createdAtAsString = LocalDate.now().toString()),
+                        product = product
+                    )
+                )
+        }
+        return optionalLatestPrice.get()
     }
 
     private fun generateUniqueProductId(): UUID {
