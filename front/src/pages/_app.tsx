@@ -1,6 +1,27 @@
+import { CardComponentProps } from "@/components/card/Card"
 import "./globals.css"
-import { CardComponent } from "@/components"
+import { CardComponent, CardTableComponent } from "@/components"
 
 export default function MyApp() {
-    return <CardComponent imageUrl="https://www.shutterstock.com/image-photo/example-word-written-on-wooden-260nw-1765482248.jpg" title="aaa" price={14123.51} />
+    const cards: CardComponentProps[] = [
+        { title: "Title", imageUrl: "https://www.shutterstock.com/image-photo/example-word-written-on-wooden-260nw-1765482248.jpg", price: 12321 },
+        { title: "Title", imageUrl: "https://www.shutterstock.com/image-photo/example-word-written-on-wooden-260nw-1765482248.jpg", price: 12321 },
+        { title: "Title", imageUrl: "https://www.shutterstock.com/image-photo/example-word-written-on-wooden-260nw-1765482248.jpg", price: 12321 },
+        { title: "Title", imageUrl: "https://www.shutterstock.com/image-photo/example-word-written-on-wooden-260nw-1765482248.jpg", price: 12321 },
+        { title: "Title", imageUrl: "https://www.shutterstock.com/image-photo/example-word-written-on-wooden-260nw-1765482248.jpg", price: 12321 },
+        { title: "Title", imageUrl: "https://www.shutterstock.com/image-photo/example-word-written-on-wooden-260nw-1765482248.jpg", price: 12321 },
+        { title: "Title", imageUrl: "https://www.shutterstock.com/image-photo/example-word-written-on-wooden-260nw-1765482248.jpg", price: 12321 },
+        { title: "Title", imageUrl: "https://www.shutterstock.com/image-photo/example-word-written-on-wooden-260nw-1765482248.jpg", price: 12321 },
+        { title: "Title", imageUrl: "https://www.shutterstock.com/image-photo/example-word-written-on-wooden-260nw-1765482248.jpg", price: 12321 },
+        { title: "Title", imageUrl: "https://www.shutterstock.com/image-photo/example-word-written-on-wooden-260nw-1765482248.jpg", price: 12321 },
+        { title: "Title", imageUrl: "https://www.shutterstock.com/image-photo/example-word-written-on-wooden-260nw-1765482248.jpg", price: 12321 },
+        { title: "Title", imageUrl: "https://www.shutterstock.com/image-photo/example-word-written-on-wooden-260nw-1765482248.jpg", price: 12321 },
+        { title: "Title", imageUrl: "https://www.shutterstock.com/image-photo/example-word-written-on-wooden-260nw-1765482248.jpg", price: 12321 },
+        { title: "Title", imageUrl: "https://www.shutterstock.com/image-photo/example-word-written-on-wooden-260nw-1765482248.jpg", price: 12321 },
+        { title: "Title", imageUrl: "https://www.shutterstock.com/image-photo/example-word-written-on-wooden-260nw-1765482248.jpg", price: 12321 },
+        { title: "Title", imageUrl: "https://www.shutterstock.com/image-photo/example-word-written-on-wooden-260nw-1765482248.jpg", price: 12321 },
+    ]
+    return <>
+        <CardTableComponent cards={cards} />
+    </>
 }

@@ -1,12 +1,12 @@
 import styles from "./styles.module.css"
 
-interface CardComponentInterface {
+export interface CardComponentProps {
     title: string,
     imageUrl: string,
     price: number
 }
 
-const CardComponent = ({ imageUrl, price, title }: CardComponentInterface) => {
+const CardComponent = ({ imageUrl, price, title }: CardComponentProps) => {
     const formatPrice = (price: number) => {
         return price.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
     }
