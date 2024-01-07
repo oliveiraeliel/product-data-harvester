@@ -1,7 +1,7 @@
 import Product from "@interfaces/product.interface"
 import styles from "./styles.module.css"
 import { useState } from "react"
-import { ProductModal } from ".."
+import { ProductChart, ProductModal } from ".."
 
 export interface CardComponentProps {
     title: string,
@@ -24,8 +24,9 @@ const CardComponent = (product: Product) => {
         <span className={styles.price}>
             R$ {product.prices.length != 0 ? formatPrice(product.prices[product.prices.length - 1].price) : "---"}</span>
 
-        <ProductModal isOpen={isModalOpen} onClose={() => { }}>
+        <ProductModal isOpen={isModalOpen} onClose={() => {}}>
             <p>{product.name}</p>
+            <ProductChart prices={product.prices} />
         </ProductModal>
 
     </div>
