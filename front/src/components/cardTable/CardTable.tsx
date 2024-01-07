@@ -1,29 +1,28 @@
 import React from "react";
 import CardComponent, { CardComponentProps } from "../card/Card"
 import styles from "./styles.module.css"
+import { randomUUID } from "crypto";
+import Product from "@interfaces/product.interface";
 
 
-interface CardTableComponentProps {
-    cards: CardComponentProps[];
+interface CardTableProps {
+    products: Product[];
 }
 
-const renderCardComponents = (cards: CardComponentProps[]) => {
-    return cards.map((card, index) => (
+const CardComponents = ({products}: CardTableProps) => {
+    return products.map((product: Product) => (
         <div className={styles.card}>
             <CardComponent
-                key={index}
-                imageUrl={card.imageUrl}
-                title={card.title}
-                price={card.price}
+                {...product}
+                key={product.id}
             />
         </div>
-
     ));
 };
 
-const CardTableComponent: React.FC<CardTableComponentProps> = ({ cards }) => {
+const CardTableComponent: React.FC<CardTableProps> = ({products}: CardTableProps) => {
     return <div className={styles.tableBody}>
-        {renderCardComponents(cards)}
+        <CardComponents products={products}/>
     </div>
 }
 

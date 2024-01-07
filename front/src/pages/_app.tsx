@@ -1,27 +1,54 @@
-import { CardComponentProps } from "@/components/card/Card"
-import "./globals.css"
-import { CardComponent, CardTableComponent } from "@/components"
+import { useEffect, useState } from 'react';
+import Product from '@interfaces/product.interface';
+import { CardTableComponent } from '@components/index';
 
-export default function MyApp() {
-    const cards: CardComponentProps[] = [
-        { title: "Title", imageUrl: "https://www.shutterstock.com/image-photo/example-word-written-on-wooden-260nw-1765482248.jpg", price: 12321 },
-        { title: "Title", imageUrl: "https://www.shutterstock.com/image-photo/example-word-written-on-wooden-260nw-1765482248.jpg", price: 12321 },
-        { title: "Title", imageUrl: "https://www.shutterstock.com/image-photo/example-word-written-on-wooden-260nw-1765482248.jpg", price: 12321 },
-        { title: "Title", imageUrl: "https://www.shutterstock.com/image-photo/example-word-written-on-wooden-260nw-1765482248.jpg", price: 12321 },
-        { title: "Title", imageUrl: "https://www.shutterstock.com/image-photo/example-word-written-on-wooden-260nw-1765482248.jpg", price: 12321 },
-        { title: "Title", imageUrl: "https://www.shutterstock.com/image-photo/example-word-written-on-wooden-260nw-1765482248.jpg", price: 12321 },
-        { title: "Title", imageUrl: "https://www.shutterstock.com/image-photo/example-word-written-on-wooden-260nw-1765482248.jpg", price: 12321 },
-        { title: "Title", imageUrl: "https://www.shutterstock.com/image-photo/example-word-written-on-wooden-260nw-1765482248.jpg", price: 12321 },
-        { title: "Title", imageUrl: "https://www.shutterstock.com/image-photo/example-word-written-on-wooden-260nw-1765482248.jpg", price: 12321 },
-        { title: "Title", imageUrl: "https://www.shutterstock.com/image-photo/example-word-written-on-wooden-260nw-1765482248.jpg", price: 12321 },
-        { title: "Title", imageUrl: "https://www.shutterstock.com/image-photo/example-word-written-on-wooden-260nw-1765482248.jpg", price: 12321 },
-        { title: "Title", imageUrl: "https://www.shutterstock.com/image-photo/example-word-written-on-wooden-260nw-1765482248.jpg", price: 12321 },
-        { title: "Title", imageUrl: "https://www.shutterstock.com/image-photo/example-word-written-on-wooden-260nw-1765482248.jpg", price: 12321 },
-        { title: "Title", imageUrl: "https://www.shutterstock.com/image-photo/example-word-written-on-wooden-260nw-1765482248.jpg", price: 12321 },
-        { title: "Title", imageUrl: "https://www.shutterstock.com/image-photo/example-word-written-on-wooden-260nw-1765482248.jpg", price: 12321 },
-        { title: "Title", imageUrl: "https://www.shutterstock.com/image-photo/example-word-written-on-wooden-260nw-1765482248.jpg", price: 12321 },
-    ]
-    return <>
-        <CardTableComponent cards={cards} />
-    </>
-}
+const fetchProducts = async () => {
+    const URL = process.env.PRODUCT_API_URL;
+    console.log(URL);
+
+    if (!URL) {
+        throw new Error('no url provided');
+    }
+    const res = await fetch(`${URL}api/products`);
+    if (!res.ok) {
+        throw new Error(':c');
+    }
+    const rawData = await res.json();
+    return rawData.map((item: any) => ({
+        id: item.product.id,
+        name: item.product.name,
+        pageUrl: item.product.pageUrl,
+        source: item.product.source,
+        imageUrl: item.product.imageUrl,
+        productType: item.product.productType,
+        prices: item.prices.map((price: any) => ({
+            price: price.price,
+            date: price.date
+        })),
+    }));
+};
+
+const Products = () => {
+    const [products, setProducts] = useState<Product[]>([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data = await fetchProducts();
+                setProducts(data);
+            } catch (error) {
+                console.error('Error fetching products:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    return <CardTableComponent products={products} />;
+};
+
+const MyApp = () => {
+    return <Products />;
+};
+
+export default MyApp;
