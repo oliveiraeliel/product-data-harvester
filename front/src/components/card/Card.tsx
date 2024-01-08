@@ -1,7 +1,8 @@
 import Product from "@interfaces/product.interface"
 import styles from "./styles.module.css"
 import { useState } from "react"
-import { ProductChart, ProductModal } from ".."
+import { ModalContent, ProductChart, ProductModal } from ".."
+import { formatPrice } from "utils/formatPrice"
 
 export interface CardComponentProps {
     title: string,
@@ -12,10 +13,6 @@ export interface CardComponentProps {
 const CardComponent = (product: Product) => {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-    const formatPrice = (price: number) => {
-        return price.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-    }
-
     return <div className={styles.cardBody} onClick={() => setIsModalOpen(!isModalOpen)}>
         <div className={styles.productIdentityBox}>
             <img src={product.imageUrl} className={styles.productImage} alt="product's picture" />
@@ -24,9 +21,8 @@ const CardComponent = (product: Product) => {
         <span className={styles.price}>
             R$ {product.prices.length != 0 ? formatPrice(product.prices[product.prices.length - 1].price) : "---"}</span>
 
-        <ProductModal isOpen={isModalOpen} onClose={() => {}}>
-            <p>{product.name}</p>
-            <ProductChart prices={product.prices} />
+        <ProductModal isOpen={isModalOpen} onClose={() => { }}>
+            <ModalContent {...product} />
         </ProductModal>
 
     </div>
