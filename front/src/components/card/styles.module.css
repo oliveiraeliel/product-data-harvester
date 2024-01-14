@@ -12,15 +12,20 @@
 
 .productIdentityBox {
     width         : 100%;
+    height        : 80%;
     display       : flex;
     flex-direction: column;
     align-items   : center;
+
 }
 
 .productImage {
-    width        : auto;
-    height       : auto;
-    border-radius: 5px;
+    border-radius   : 5px;
+    max-width       : 80%;
+    /* Garante que a largura não ultrapasse 100% do contêiner */
+    max-height      : 80%;
+    /* Garante que a altura não ultrapasse 100% do contêiner */
+    /* object-fit   : cover; */
 }
 
 .title {

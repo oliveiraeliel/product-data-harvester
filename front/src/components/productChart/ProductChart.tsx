@@ -1,6 +1,7 @@
 import ProductPrice from '@interfaces/productPrice.interface';
 import React from 'react';
 import dynamic from "next/dynamic";
+import styles from "./styles.module.css";
 const ApexChart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 interface ProductChartProps {
@@ -55,9 +56,8 @@ const ProductChart: React.FC<ProductChartProps> = ({ prices }) => {
         data
     }];
     return (
-        <>
-            <ApexChart type="line" options={option} series={series} height={500} width={700} />
-        </>
+        <ApexChart type="line" options={option} series={series} className={styles.customChart} />
+
     )
 };
 

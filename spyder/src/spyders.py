@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from src.entities import Product
 from abc import ABC, abstractmethod
+import json
 
 
 class SpyderInterface(ABC):
@@ -22,29 +23,47 @@ class MagazineLuizaSpyder(SpyderInterface):
             i = 1
             while True:
                 try:
-                    products = products + self.__fetch__(product_type, target, i)
+                    self.__fetch__(products, product_type, target, i)
                     i += 1
-                except:
+                except Exception as e:
+                    print(e)
                     break
         return products
 
-    def __fetch__(self, product_type: str, target: str, page=1) -> list[Product]:
+    def __fetch__(self, products: list[Product], product_type: str,
+                  target: str, page=1) -> None:
         url = f'{self.base_url}/{target}/?page={page}'
-        response = requests.get(url)
-        if response.status_code == 200:
+        if (response := requests.get(url)).status_code == 200:
             soup = BeautifulSoup(response.text, 'html.parser')
-            product_items = soup.find_all('li', class_='sc-APcvf eJDyHN')
-            products: list[Product] = []
-            for item in product_items:
-                product = Product()
-                href = item.find('a', class_='sc-eBMEME uPWog sc-gppfCo egZavq sc-gppfCo egZavq').get('href')
-                product.page_url = f"{self.base_url}/{href}"
-                product.price = float(item.find('p', 'sc-kpDqfm eCPtRw sc-hoLEA kXWuGr').text.split()[1].replace('.', '').replace(',', '.'))
-                product.name = item.find('h2', 'sc-eWzREE uaEbk').text
-                product.image_url = item.find('img', class_='sc-cWSHoV bLJsBf').get('src')
+            items = soup.find('div', {'data-testid': 'product-list'}) \
+                        .find('ul', {'data-testid': 'list'}) \
+                        .find_all("li")
+            for item in items:
+                href = item.find('a') \
+                            .get('href')
+                product_page_url = f"{self.base_url}/{href}"
+                product = self.__fetch_product_page__(product_page_url)
                 product.product_type = product_type
                 product.source = self.source
                 products.append(product)
-            return products
         else:
-            raise Exception(f"Failed to retrieve the page. Status code: {response.status_code}. Url: {url}")
+            raise Exception("Failed to retrieve the page. Status code: " +
+                            f"{response.status_code}. Url: {url}")
+
+    def __fetch_product_page__(self, url: str) -> Product:
+        product = Product()
+        if (response := requests.get(url)).status_code == 200:
+            soup = BeautifulSoup(response.text, 'html.parser')
+            infos_tag_identifier = {'data-testid': 'jsonld-script',
+                                    'type': 'application/ld+json'}
+            infos = json.loads(soup.find('script', infos_tag_identifier).text)
+            product.name = infos['name']
+            product.price = float(infos['offers']['price'])
+            product.page_url = infos['offers']['url']
+            image_url = infos['image'].split("/")
+            image_url[3] = "2000x2000"
+            product.image_url = "/".join(image_url)
+            return product
+        else:
+            raise Exception("Failed to retrieve the page. Status code: " +
+                            f"{response.status_code}. Url: {url}")

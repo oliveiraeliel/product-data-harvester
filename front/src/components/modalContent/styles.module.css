@@ -22,7 +22,16 @@
     flex-direction : column;
     justify-content: center;
     align-items    : center;
+    width          : 40%;
 }
 
 .productImage {
+    width: 90%;
+}
+
+
+@media (max-width: 1000px) {
+    .modalContentPart {
+        width: 90%;
+    }
 }

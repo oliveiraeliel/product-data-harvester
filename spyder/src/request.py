@@ -21,5 +21,6 @@ class PostData:
                 "price": product.price,
                 "productType": product.product_type
             }
-            async with session.post(self.url + "/api/products", json=payload) as response:
+            url = self.url + "/api/products"
+            async with session.post(url, json=payload) as response:
                 return await response.json()
