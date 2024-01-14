@@ -21,6 +21,8 @@ const fetchProducts = async () => {
         source: item.product.source,
         imageUrl: item.product.imageUrl,
         productType: item.product.productType,
+        rating: item.product.rating,
+        reviewCount: item.product.reviewCount,
         prices: item.prices.map((price: any) => ({
             price: price.price,
             date: price.date

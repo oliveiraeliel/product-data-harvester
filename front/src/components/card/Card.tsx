@@ -1,7 +1,7 @@
 import Product from "@interfaces/product.interface";
 import styles from "./styles.module.css";
 import { useState, useRef, useEffect } from "react";
-import { ModalContent, ProductModal } from "..";
+import { ModalContent, ProductModal, RatingCard } from "..";
 import { formatPrice } from "utils/formatPrice";
 
 export interface CardComponentProps {
@@ -34,6 +34,7 @@ const CardComponent = (product: Product) => {
                 <img src={product.imageUrl} className={styles.productImage} alt="product's picture" />
                 <span className={styles.title}>{product.name}</span>
             </div>
+            <RatingCard {...product} />
             <span className={styles.price}>
                 R$ {product.prices.length !== 0 ? formatPrice(product.prices[product.prices.length - 1].price) : "---"}
             </span>

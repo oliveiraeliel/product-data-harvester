@@ -19,7 +19,10 @@ class PostData:
                 "imageUrl": product.image_url,
                 "pageUrl": product.page_url,
                 "price": product.price,
-                "productType": product.product_type
+                "productType": product.product_type,
+                "rating": product.rating,
+                "reviewCount": product.review_count,
+                "brand": product.brand
             }
             url = self.url + "/api/products"
             async with session.post(url, json=payload) as response:

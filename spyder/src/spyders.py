@@ -58,4 +58,12 @@ class MagazineLuizaSpyder(SpyderInterface):
             product.image_url = "/".join(image_url)
             product.product_type = product_type
             product.source = self.source
+            if 'aggregateRating' in product_infos:
+                product.rating = float(
+                    product_infos['aggregateRating']['ratingValue']
+                )
+                product.review_count = int(
+                    product_infos['aggregateRating']['reviewCount']
+                )
+            product.brand = product_infos['brand']
             products.append(product)

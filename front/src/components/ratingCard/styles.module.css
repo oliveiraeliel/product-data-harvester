@@ -1,0 +1,11 @@
+.rating {
+    display        : flex;
+    flex-direction : row;
+    justify-content: center;
+    align-items    : center;
+}
+
+.rating div {
+    font-size: 10pt;
+    font-weight: 700;
+}

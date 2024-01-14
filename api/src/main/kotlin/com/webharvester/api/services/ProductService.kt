@@ -51,7 +51,10 @@ class ProductService @Autowired constructor(
                 productType = dto.productType,
                 imageUrl = dto.imageUrl,
                 pageUrl = pageUrl,
-                createdAt = createdAt
+                createdAt = createdAt,
+                brand = dto.brand,
+                rating = dto.rating,
+                reviewCount = dto.reviewCount
             )
         )
         return productPriceDateRepository.save(

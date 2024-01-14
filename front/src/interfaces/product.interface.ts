@@ -7,5 +7,7 @@ export default interface Product {
     source: string;
     imageUrl: string;
     productType: string;
+    rating: number;
+    reviewCount: number;
     prices: ProductPrice[];
 }

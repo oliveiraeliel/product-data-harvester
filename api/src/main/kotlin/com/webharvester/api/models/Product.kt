@@ -26,6 +26,15 @@ data class Product(
     @Column(name = "product_type", length = 50, nullable = false)
     val productType: String,
 
+    @Column(name = "rating")
+    val rating: Float,
+
+    @Column(name = "reviewCount")
+    val reviewCount: Int,
+
+    @Column(name = "brand")
+    val brand: String,
+
     @Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     @Temporal(TemporalType.TIMESTAMP)
     val createdAt: Date = Date(),

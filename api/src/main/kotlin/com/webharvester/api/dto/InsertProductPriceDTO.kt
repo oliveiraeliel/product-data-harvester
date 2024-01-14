@@ -18,5 +18,13 @@ data class InsertProductPriceDTO(
     val price: Float,
 
     @field:NotBlank(message = "Page url cannot be blank")
-    val productType: String
+    val productType: String,
+
+    val brand: String,
+
+    @field:PositiveOrZero(message = "ReviewCount must be a positive number")
+    val reviewCount: Int,
+
+    @field:PositiveOrZero(message = "Price must be a positive number")
+    val rating: Float
 )
