@@ -15,13 +15,11 @@ const ModalContent: React.FC<Product> = (product: Product) => {
                 </div>
                 <div className={styles.modalContentPart}>
                     <img src={product.imageUrl} alt="product's picture" className={styles.productImage} />
-                    <div>
-                        <RatingCard rating={product.rating} reviewCount={product.reviewCount} />
-                        <span className={styles.price}>
-                            R$ {product.prices.length != 0 ? formatPrice(product.prices[product.prices.length - 1].price) : "---"}
-                        </span>
-                        <Button variant="contained" color={"secondary"} href={product.pageUrl}>Visitar</Button>
-                    </div>
+                    <RatingCard rating={product.rating} reviewCount={product.reviewCount} />
+                    <span className={styles.price}>
+                        R$ {product.prices.length != 0 ? formatPrice(product.prices[product.prices.length - 1].price) : "---"}
+                    </span>
+                    <Button variant="contained" color={"secondary"} href={product.pageUrl}>Visitar</Button>
                 </div>
             </div >
         </div>);
