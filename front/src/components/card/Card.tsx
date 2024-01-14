@@ -2,7 +2,7 @@ import Product from "@interfaces/product.interface";
 import styles from "./styles.module.css";
 import { useState, useRef, useEffect } from "react";
 import { ModalContent, ProductModal, RatingCard } from "..";
-import { formatPrice } from "utils/formatPrice";
+import { currencyFormater } from "@utils/currencyFormater";
 
 export interface CardComponentProps {
     title: string;
@@ -36,7 +36,7 @@ const CardComponent = (product: Product) => {
             </div>
             <RatingCard {...product} />
             <span className={styles.price}>
-                R$ {product.prices.length !== 0 ? formatPrice(product.prices[product.prices.length - 1].price) : "---"}
+                {product.prices.length !== 0 ? currencyFormater(product.prices[product.prices.length - 1].price) : "---"}
             </span>
 
             <ProductModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>

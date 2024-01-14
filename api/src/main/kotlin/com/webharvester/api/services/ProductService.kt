@@ -57,13 +57,18 @@ class ProductService @Autowired constructor(
                 reviewCount = dto.reviewCount
             )
         )
-        return productPriceDateRepository.save(
+        val optionalLatestPrice = productPriceDateRepository.findLatestPrice(product.id)
+        if ((optionalLatestPrice.isPresent && optionalLatestPrice.get().price != dto.price)
+            || optionalLatestPrice.isEmpty){
+            return productPriceDateRepository.save(
                 ProductPriceDate(
                     price = dto.price,
                     id = ProductPriceDateId(id = product.id, createdAtAsString = LocalDate.now().toString()),
                     product = product
                 )
             )
+        }
+        return optionalLatestPrice.get()
     }
 
     private fun generateUniqueProductId(): UUID {

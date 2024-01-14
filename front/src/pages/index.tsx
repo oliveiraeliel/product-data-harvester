@@ -25,7 +25,7 @@ const fetchProducts = async () => {
         reviewCount: item.product.reviewCount,
         prices: item.prices.map((price: any) => ({
             price: price.price,
-            date: price.date
+            date: new Date(price.date)
         })),
     }));
 };
