@@ -6,8 +6,8 @@ from src.request import PostData
 async def main():
     publisher = PostData(MagazineLuizaProducts())
 
-    print([await publisher.post_product(product)
-           for product in publisher.products])
+    [await publisher.post_product(product)
+        for product in publisher.products]
 
 
 if __name__ == '__main__':

@@ -29,6 +29,7 @@ class MagazineLuizaSpyder(SpyderInterface):
                     self.__fetch__(products, product_type, url)
                     i += 1
                 except Exception as e:
+                    print(f"{len(products)} products found")
                     print(e)
                     break
         return products
@@ -39,33 +40,22 @@ class MagazineLuizaSpyder(SpyderInterface):
         response.raise_for_status()
 
         soup = BeautifulSoup(response.text, 'html.parser')
-        items = soup.find('div', {'data-testid': 'mod-productlist'}) \
+        infos = soup.find('div', {'data-testid': 'mod-productlist'}) \
                     .find('div', {'data-testid': 'product-list'}) \
-                    .find('ul', {'data-testid': 'list'}) \
-                    .find_all("li")
+                    .find('script', {
+                        'data-testid': 'jsonld-script',
+                        'type': 'application/ld+json'
+                    }).text
+        products_infos = json.loads(infos)
 
-        for item in items:
-            href = item.find('a').get('href')
-            product_page_url = f"{self.base_url}/{href}"
-            product = self.__fetch_product_page__(
-                product_page_url, product_type)
+        for product_infos in products_infos['@graph']:
+            product = Product()
+            product.name = product_infos['name']
+            product.price = float(product_infos['offers']['price'])
+            product.page_url = product_infos['offers']['url']
+            image_url = product_infos['image'].split("/")
+            image_url[3] = "2000x2000"
+            product.image_url = "/".join(image_url)
+            product.product_type = product_type
+            product.source = self.source
             products.append(product)
-
-    def __fetch_product_page__(self, url: str, product_type: str) -> Product:
-        response = self.session.get(url)
-        response.raise_for_status()
-
-        product = Product()
-        soup = BeautifulSoup(response.text, 'html.parser')
-        infos_tag_identifier = {'data-testid': 'jsonld-script',
-                                'type': 'application/ld+json'}
-        infos = json.loads(soup.find('script', infos_tag_identifier).text)
-        product.name = infos['name']
-        product.price = float(infos['offers']['price'])
-        product.page_url = infos['offers']['url']
-        image_url = infos['image'].split("/")
-        image_url[3] = "2000x2000"
-        product.image_url = "/".join(image_url)
-        product.product_type = product_type
-        product.source = self.source
-        return product
