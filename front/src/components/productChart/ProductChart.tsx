@@ -11,6 +11,7 @@ interface ProductChartProps {
 }
 
 const dateFormatter = (date: Date) => {
+
     return date.toLocaleDateString('pt-BR', {
         month: 'numeric',
         day: 'numeric',
@@ -26,6 +27,7 @@ const ProductChart: React.FC<ProductChartProps> = ({ prices }) => {
                 data: prices.map((price) => (
                     price.date
                 )),
+                tickMinStep: 3600 * 1000 * 24,
                 valueFormatter: dateFormatter
             }]}
             series={[

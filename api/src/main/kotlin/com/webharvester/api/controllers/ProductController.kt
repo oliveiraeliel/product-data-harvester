@@ -7,6 +7,7 @@ import com.webharvester.api.models.ProductPriceDate
 import com.webharvester.api.services.ProductService
 import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Page
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.BindingResult
@@ -14,11 +15,19 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/products")
 class ProductController @Autowired constructor(private val productService: ProductService){
+
+    @GetMapping(params = ["page", "size"])
+    fun getPages(@RequestParam("page") page: Int,
+               @RequestParam("size") size: Int): ResponseEntity<Page<ProductPricesDTO>> {
+        val products = productService.findProductAndPricesPage(page, size)
+        return ResponseEntity(products, HttpStatus.OK)
+    }
 
     @GetMapping
     fun getAll(): ResponseEntity<List<ProductPricesDTO>> {

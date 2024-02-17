@@ -9,6 +9,8 @@ import com.webharvester.api.models.ProductPriceDateId
 import com.webharvester.api.repositories.ProductPriceDateRepository
 import com.webharvester.api.repositories.ProductRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 import java.util.Date
@@ -18,6 +20,19 @@ import java.util.UUID
 class ProductService @Autowired constructor(
     private val productRepository: ProductRepository,
     private  val productPriceDateRepository: ProductPriceDateRepository){
+
+    fun findProductAndPricesPage(page: Int, size: Int): Page<ProductPricesDTO> {
+        val pageable = PageRequest.of(page, size)
+
+        // Assuming ProductPricesDTO is a DTO that you have defined
+        val productPricesPage = productRepository.findAll(pageable)
+            .map { product ->
+                val productPriceDates = productPriceDateRepository.findPricesByProductId(product.id)
+                ProductPricesDTO(product, productPriceDates.map { PriceDate(it) })
+            }
+
+        return productPricesPage
+    }
 
     fun getAllProductsWithPrices() : List<ProductPricesDTO>{
         return productRepository.findAll()
@@ -63,7 +78,10 @@ class ProductService @Autowired constructor(
             return productPriceDateRepository.save(
                 ProductPriceDate(
                     price = dto.price,
-                    id = ProductPriceDateId(id = product.id, createdAtAsString = LocalDate.now().toString()),
+                    id = ProductPriceDateId(
+                        id = product.id, 
+                        createdAtAsString = LocalDate.now().toString()
+                    ),
                     product = product
                 )
             )

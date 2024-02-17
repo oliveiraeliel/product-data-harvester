@@ -3,12 +3,10 @@ import CardComponent, { CardComponentProps } from "../card/Card"
 import styles from "./styles.module.css"
 import { randomUUID } from "crypto";
 import Product from "@interfaces/product.interface";
+import Page from "@interfaces/apiResponse.interface";
 
-interface CardTableProps {
-    products: Product[];
-}
 
-const CardComponents = ({ products }: CardTableProps) => {
+const CardComponents: React.FC<{ products: Product[] }> = ({ products }) => {
     return products.map((product: Product) => (
         <div className={styles.card}
             key={product.id}>
@@ -19,9 +17,9 @@ const CardComponents = ({ products }: CardTableProps) => {
     ));
 };
 
-const CardTableComponent: React.FC<CardTableProps> = ({ products }: CardTableProps) => {
+const CardTableComponent: React.FC<{ page: Page<Product> | null }> = ({ page }) => {
     return <div className={styles.tableBody}>
-        <CardComponents products={products} />
+        <CardComponents products={page ? page.content : []} />
     </div>
 }
 
